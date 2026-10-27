@@ -1,0 +1,43 @@
+# Module wrapper; upstream API preserved. Policy: mcpp-index/docs/mwrap.md.
+[package]
+namespace   = "mcpplibs.mwrap"
+name        = "sdl3"
+version     = "3.4.18"
+description = "SDL 3.4.18 C++ modules for mcpp (import mcpplibs.mwrap.sdl3;): the C API of SDL.h (with SDL_vulkan.h and SDL_main.h's functions) over compat.sdl3, its inline API adapted, its macros as constants and functions"
+license     = "Apache-2.0"
+authors     = ["mcpp-community"]
+repo        = "https://github.com/mcpplibs/sdl3-m"
+platforms   = ["linux", "macos", "windows"]
+
+[targets.sdl3]
+kind = "lib"
+
+[build]
+sources      = ["src/*.cppm", "src/*.cpp"]
+# <mwrap/sdl3/macros.hpp>: the macros a constant or a function cannot be.
+include_dirs = ["include"]
+
+[dependencies]
+compat.sdl3 = "3.4.18"
+
+[dev-dependencies]
+compat.gtest = "1.15.2"
+
+[package.metadata.mwrap]
+upstream-version = "3.4.18"
+
+[[runtime.deploy]]
+from = "LICENSE"
+to   = "licenses/sdl3"
+
+[[runtime.deploy]]
+from = "NOTICE"
+to   = "licenses/sdl3"
+
+[[runtime.deploy]]
+from = "upstream/sdl3/README.md"
+to   = "licenses/sdl3/upstream/sdl3"
+
+[[runtime.deploy]]
+from = "upstream/sdl3/LICENSE.txt"
+to   = "licenses/sdl3/upstream/sdl3"

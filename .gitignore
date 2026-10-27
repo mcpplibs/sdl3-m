@@ -1,0 +1,6 @@
+target
+compile_commands.json
+mcpp.lock
+.mcpp/
+.xlings/
+doctor.log
