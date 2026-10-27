@@ -4,3 +4,4 @@ mcpp.lock
 .mcpp/
 .xlings/
 doctor.log
+__pycache__/
