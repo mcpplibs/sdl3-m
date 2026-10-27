@@ -1,0 +1,10 @@
+sdl3-m: C++ module wrapper
+Copyright (c) 2026 mcpp-community contributors
+
+The wrapper contributions are licensed under the Apache License, Version 2.0.
+Upstream code, copied interfaces and dependencies retain their original
+licenses and copyright notices. Simple DirectMedia Layer (SDL) is Copyright
+(C) 1997-2026 Sam Lantinga <slouken@libsdl.org> and is distributed under the
+zlib license; its original README and license are retained in upstream/sdl3/.
+The library itself is built by compat.sdl3 from the same release. Provenance
+and checksums are recorded in upstream/documents.json.

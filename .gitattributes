@@ -1,0 +1,3 @@
+# Preserve upstream document bytes, patches and original whitespace on every platform.
+upstream/** -text -whitespace
+patches/** -text -whitespace

@@ -1,0 +1,110 @@
+// {{project.name}} — what SDL 3 sees on this machine, through
+// import mcpplibs.mwrap.sdl3: the version, the CPU, the video, audio, render
+// and GPU drivers, the displays, a GPU device and its shader formats, the
+// battery and the preferred locales. It opens no window; on a machine without
+// a display it reports through SDL's offscreen video driver.
+import std;
+import mcpplibs.mwrap.sdl3;
+
+using namespace mcpplibs::mwrap::sdl3::macros;  // SDL_INIT_VIDEO, SDL_VERSIONNUM_MAJOR, SDL_GPU_SHADERFORMAT_* …
+
+namespace {
+
+template <class F>
+std::string listed(int count, F name) {
+    std::string out;
+    for (int i = 0; i < count; ++i) out += (i ? ", " : "") + std::string(name(i));
+    return out.empty() ? "(none)" : out;
+}
+
+std::string simd() {
+    const std::pair<const char*, bool (*)()> features[] = {
+        {"SSE", SDL_HasSSE},   {"SSE2", SDL_HasSSE2},     {"SSE3", SDL_HasSSE3}, {"SSE4.1", SDL_HasSSE41},
+        {"SSE4.2", SDL_HasSSE42}, {"AVX", SDL_HasAVX},    {"AVX2", SDL_HasAVX2}, {"AVX-512F", SDL_HasAVX512F},
+        {"NEON", SDL_HasNEON}, {"ARMv6 SIMD", SDL_HasARMSIMD}, {"AltiVec", SDL_HasAltiVec}, {"LSX", SDL_HasLSX}};
+    std::string out;
+    for (const auto& [name, has] : features)
+        if (has()) out += (out.empty() ? "" : " ") + std::string(name);
+    return out.empty() ? "(none)" : out;
+}
+
+std::string shader_formats(SDL_GPUShaderFormat f) {
+    const std::pair<SDL_GPUShaderFormat, const char*> names[] = {
+        {SDL_GPU_SHADERFORMAT_SPIRV, "SPIR-V"}, {SDL_GPU_SHADERFORMAT_DXBC, "DXBC"}, {SDL_GPU_SHADERFORMAT_DXIL, "DXIL"},
+        {SDL_GPU_SHADERFORMAT_MSL, "MSL"},     {SDL_GPU_SHADERFORMAT_METALLIB, "metallib"}};
+    std::string out;
+    for (const auto& [bit, name] : names)
+        if (f & bit) out += (out.empty() ? "" : ", ") + std::string(name);
+    return out;
+}
+
+}  // namespace
+
+int main() {
+    const int v = SDL_GetVersion();
+    std::println("SDL {}.{}.{} ({}) on {}", SDL_VERSIONNUM_MAJOR(v), SDL_VERSIONNUM_MINOR(v), SDL_VERSIONNUM_MICRO(v),
+                 *SDL_GetRevision() ? SDL_GetRevision() : "release", SDL_GetPlatform());
+    std::println("CPU        {} logical cores, {} B cache line, SIMD: {}", SDL_GetNumLogicalCPUCores(), SDL_GetCPUCacheLineSize(),
+                 simd());
+    std::println("memory     {} MiB", SDL_GetSystemRAM());
+
+    // The video subsystem: the machine's own driver, else the offscreen one.
+    bool offscreen = false;
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        std::println("video      no display ({}); using the offscreen driver", SDL_GetError());
+        SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "offscreen");
+        offscreen = true;
+        if (!SDL_Init(SDL_INIT_VIDEO)) {
+            std::println("video      {}", SDL_GetError());
+            return 1;
+        }
+    }
+    std::println("video      {} (built in: {})", SDL_GetCurrentVideoDriver(), listed(SDL_GetNumVideoDrivers(), SDL_GetVideoDriver));
+    std::println("render     {}", listed(SDL_GetNumRenderDrivers(), SDL_GetRenderDriver));
+
+    int count = 0;
+    if (SDL_DisplayID* displays = SDL_GetDisplays(&count)) {
+        for (int i = 0; i < count; ++i) {
+            const SDL_DisplayMode* mode = SDL_GetCurrentDisplayMode(displays[i]);
+            std::println("display    {}: {} {}x{} @ {} Hz, scale {}", displays[i], SDL_GetDisplayName(displays[i]),
+                         mode ? mode->w : 0, mode ? mode->h : 0, mode ? mode->refresh_rate : 0.0f,
+                         SDL_GetDisplayContentScale(displays[i]));
+        }
+        SDL_free(displays);
+    }
+
+    std::println("GPU        drivers: {}", listed(SDL_GetNumGPUDrivers(), SDL_GetGPUDriver));
+    const SDL_GPUShaderFormat wanted = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL;
+    if (SDL_GPUDevice* gpu = SDL_CreateGPUDevice(wanted, false, nullptr)) {
+        const SDL_PropertiesID props = SDL_GetGPUDeviceProperties(gpu);
+        std::println("GPU        device on {}: {} ({}), shaders: {}", SDL_GetGPUDeviceDriver(gpu),
+                     SDL_GetStringProperty(props, SDL_PROP_GPU_DEVICE_NAME_STRING, "unnamed"),
+                     SDL_GetStringProperty(props, SDL_PROP_GPU_DEVICE_DRIVER_INFO_STRING, "no driver information"),
+                     shader_formats(SDL_GetGPUShaderFormats(gpu)));
+        SDL_DestroyGPUDevice(gpu);
+    } else {
+        std::println("GPU        no device{}: {}", offscreen ? " without a display" : "", SDL_GetError());
+    }
+
+    const std::string audio_drivers = listed(SDL_GetNumAudioDrivers(), SDL_GetAudioDriver);
+    if (SDL_InitSubSystem(SDL_INIT_AUDIO)) {
+        std::println("audio      {} (built in: {})", SDL_GetCurrentAudioDriver(), audio_drivers);
+    } else {
+        std::println("audio      none: {} (built in: {})", SDL_GetError(), audio_drivers);
+    }
+
+    int seconds = -1, percent = -1;
+    const SDL_PowerState power = SDL_GetPowerInfo(&seconds, &percent);
+    const char* states[] = {"error", "unknown", "on battery", "no battery", "charging", "charged"};
+    std::println("power      {}{}", states[power - SDL_POWERSTATE_ERROR], percent >= 0 ? std::format(", {}%", percent) : "");
+    if (SDL_Locale** locales = SDL_GetPreferredLocales(&count)) {
+        std::string list;
+        for (int i = 0; i < count; ++i)
+            list += std::format("{}{}{}{}", i ? ", " : "", locales[i]->language, locales[i]->country ? "_" : "",
+                                locales[i]->country ? locales[i]->country : "");
+        std::println("locales    {}", list.empty() ? "(none)" : list);
+        SDL_free(locales);
+    }
+    SDL_Quit();
+    return 0;
+}
