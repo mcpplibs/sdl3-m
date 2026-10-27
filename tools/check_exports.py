@@ -46,11 +46,22 @@ def statement_name(body: str) -> str | None:
 
 
 def compile_command(root: Path) -> list[str]:
-    db = root / 'compile_commands.json'
-    if not db.exists():
-        sys.exit('compile_commands.json is missing: run `mcpp build` first')
-    for entry in json.loads(db.read_text(encoding='utf-8')):
-        if Path(entry['file']).name == 'sdl3.cppm' and Path(entry['file']).parent.name == 'src':
+    # The configuration databases mcpp keeps in target/<triple>/<fingerprint>/
+    # (and the copy it publishes at the root when configured to): the newest
+    # one is the last `mcpp build`'s.
+    found = sorted([p for p in root.glob('target/*/*/compile_commands.json') if p.parts[-3] != 'conformance']
+                   + list(root.glob('compile_commands.json')), key=lambda p: p.stat().st_mtime, reverse=True)
+    norm = lambda p: os.path.normcase(str(Path(p).resolve()))  # noqa: E731
+    module = norm(root / 'src/sdl3.cppm')
+    entries = []
+    for db in found:
+        entries = [e for e in json.loads(db.read_text(encoding='utf-8'))
+                   if norm(Path(e['directory'], e['file'])) == module]
+        if entries:
+            break
+    if not entries:
+        sys.exit('no compile command for src/sdl3.cppm (target/*/*/compile_commands.json): run `mcpp build` first')
+    for entry in entries:
             args = entry.get('arguments') or shlex.split(entry['command'], posix=os.name != 'nt')
             break
     else:
