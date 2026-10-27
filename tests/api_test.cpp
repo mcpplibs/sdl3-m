@@ -1,7 +1,7 @@
 // SDL 3 through the module: initialisation, errors, properties, hints,
 // events, timers, threads and atomics, logging, time, versions — every call
 // spelled as SDL's documentation spells it, the macros from the mapping. The
-// video subsystem runs on SDL's offscreen driver, so no display is needed.
+// video subsystem runs on SDL's dummy driver, so no display is needed.
 #include <gtest/gtest.h>
 
 import std;
@@ -14,7 +14,8 @@ namespace {
 class Sdl : public ::testing::Test {
 protected:
     static void SetUpTestSuite() {
-        ASSERT_TRUE(SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "offscreen"));
+        // Over SDL_VIDEO_DRIVER from the environment, which a normal-priority hint does not override.
+        ASSERT_TRUE(SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, "dummy", SDL_HINT_OVERRIDE));
         ASSERT_TRUE(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) << SDL_GetError();
     }
     static void TearDownTestSuite() { SDL_Quit(); }
@@ -29,7 +30,7 @@ TEST_F(Sdl, VersionAndInit) {
     EXPECT_TRUE(SDL_VERSION_ATLEAST(3, 4, 0));
     ASSERT_NE(SDL_GetRevision(), nullptr);
     EXPECT_EQ(SDL_WasInit(SDL_INIT_VIDEO | SDL_INIT_AUDIO), SDL_INIT_VIDEO);
-    EXPECT_STREQ(SDL_GetCurrentVideoDriver(), "offscreen");
+    EXPECT_STREQ(SDL_GetCurrentVideoDriver(), "dummy");
     EXPECT_TRUE(SDL_InitSubSystem(SDL_INIT_EVENTS));  // counted: a second init is fine
     SDL_QuitSubSystem(SDL_INIT_EVENTS);
     EXPECT_NE(SDL_WasInit(SDL_INIT_EVENTS), 0u);

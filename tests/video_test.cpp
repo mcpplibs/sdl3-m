@@ -1,6 +1,6 @@
 // Pixels through the module: pixel formats and their macros, surfaces
 // (fill, blit, convert, BMP round trip), the inline rectangle API, a window
-// and the software renderer on SDL's offscreen video driver, keys and
+// and the software renderer on SDL's dummy video driver, keys and
 // scancodes, the clipboard.
 #include <gtest/gtest.h>
 
@@ -15,7 +15,7 @@ namespace {
 class Video : public ::testing::Test {
 protected:
     static void SetUpTestSuite() {
-        SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "offscreen");
+        SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, "dummy", SDL_HINT_OVERRIDE);
         ASSERT_TRUE(SDL_Init(SDL_INIT_VIDEO)) << SDL_GetError();
     }
     static void TearDownTestSuite() { SDL_Quit(); }

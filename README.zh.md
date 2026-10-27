@@ -85,8 +85,9 @@ SDL 2 的旧名字仍是宏，位于 `<mwrap/sdl3/macros.hpp>`，在 import 之�
 Linux、macOS 和 Windows。只属于某个平台的声明只在该平台导出（`SDL_SetLinuxThreadPriority`、
 `SDL_GetDXGIOutputInfo`、`MSG` …）。`SDL_opengl*.h`、`SDL_egl.h`（SDL 附带的 Khronos API；
 `SDL_GL_*` 和 `SDL_EGL_*` 已导出）、`SDL_intrin.h` 以及 `SDL_test` 头文件不做封装，
-请直接包含。无界面运行使用 `SDL_VIDEO_DRIVER=offscreen` 或 `dummy`，以及
-`SDL_AUDIO_DRIVER=dummy`。
+请直接包含。无界面运行使用 `SDL_VIDEO_DRIVER=dummy` 和 `SDL_AUDIO_DRIVER=dummy`
+（在 Linux 和 Windows 上 `offscreen` 还提供 Vulkan；在 macOS 上它把每个窗口都设为
+OpenGL 窗口，却无法加载 OpenGL）。
 
 ## 构建与测试
 

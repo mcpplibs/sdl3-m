@@ -32,8 +32,9 @@ jobs:
         shell: bash
     env:
       XLINGS_NON_INTERACTIVE: 1
-      # SDL's headless drivers: the tests open windows and audio devices.
-      SDL_VIDEO_DRIVER: offscreen
+      # SDL's headless drivers, as upstream's CTest runs: the tests open windows
+      # and audio devices. (The GPU test picks its own: offscreen, or cocoa on macOS.)
+      SDL_VIDEO_DRIVER: dummy
       SDL_AUDIO_DRIVER: dummy
     steps:
       - uses: actions/checkout@v4

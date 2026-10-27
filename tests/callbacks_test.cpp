@@ -2,7 +2,7 @@
 // SDL_EnterAppMainCallbacks — what <SDL3/SDL_main.h> does for a program with
 // SDL_MAIN_USE_CALLBACKS on a platform with a standard main. The callback
 // types (SDL_AppInit_func ...) and the entry point come from the module. A
-// window and a renderer on the offscreen driver, three frames, an event the
+// window and a renderer on the dummy video driver, three frames, an event the
 // app pushes to itself, then success.
 import std;
 import mcpplibs.mwrap.sdl3;
@@ -21,7 +21,7 @@ struct App {
 
 SDL_AppResult init(void** appstate, int argc, char* argv[]) {
     if (argc < 1 || !argv[0]) return SDL_APP_FAILURE;
-    SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "offscreen");
+    SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, "dummy", SDL_HINT_OVERRIDE);
     if (!SDL_Init(SDL_INIT_VIDEO)) return SDL_APP_FAILURE;
     if (!SDL_CreateWindowAndRenderer("callbacks", 32, 32, 0, &app.window, &app.renderer)) {
         SDL_Log("SDL_CreateWindowAndRenderer: %s", SDL_GetError());

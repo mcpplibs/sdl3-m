@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
-      SDL_VIDEO_DRIVER: offscreen
+      SDL_VIDEO_DRIVER: dummy
     steps:
       - uses: actions/checkout@v4
       - name: Install the pinned mcpp

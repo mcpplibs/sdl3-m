@@ -13,7 +13,7 @@ using namespace mcpplibs::mwrap::sdl3::macros;
 int main(int argc, char* argv[]) {
     static_assert(std::is_same_v<decltype(&::SDL_main), SDL_main_func>);
     if (argc < 1) return 1;
-    SDL_SetHint(SDL_HINT_VIDEO_DRIVER, "offscreen");
+    SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, "dummy", SDL_HINT_OVERRIDE);
     if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         std::println("SDL_Init: {}", SDL_GetError());
         return 1;

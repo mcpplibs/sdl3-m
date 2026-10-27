@@ -94,8 +94,9 @@ Linux, macOS and Windows. Declarations of one platform are exported there
 only (`SDL_SetLinuxThreadPriority`, `SDL_GetDXGIOutputInfo`, `MSG` …).
 `SDL_opengl*.h`, `SDL_egl.h` (Khronos' APIs as SDL ships them; `SDL_GL_*` and
 `SDL_EGL_*` are exported), `SDL_intrin.h` and the `SDL_test` headers are not
-wrapped; include them directly. Headless runs use `SDL_VIDEO_DRIVER=offscreen`
-or `dummy` and `SDL_AUDIO_DRIVER=dummy`.
+wrapped; include them directly. Headless runs use `SDL_VIDEO_DRIVER=dummy` and
+`SDL_AUDIO_DRIVER=dummy` (on Linux and Windows `offscreen` also offers Vulkan; on
+macOS it makes every window an OpenGL one, which it cannot load).
 
 ## Build and testing
 
