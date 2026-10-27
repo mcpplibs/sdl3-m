@@ -22,7 +22,8 @@ std::string env(const char* name) {
 
 SDL_GPUDevice* open_device(std::string& why) {
     const std::string driver = env("SDL3M_GPU_VIDEO_DRIVER");
-    SDL_SetHint(SDL_HINT_VIDEO_DRIVER, driver.empty() ? "offscreen" : driver.c_str());
+    // Over SDL_VIDEO_DRIVER from the environment, which a normal hint does not override.
+    SDL_SetHintWithPriority(SDL_HINT_VIDEO_DRIVER, driver.empty() ? "offscreen" : driver.c_str(), SDL_HINT_OVERRIDE);
     if (const std::string vk = env("SDL3M_VULKAN_LIBRARY"); !vk.empty()) SDL_SetHint(SDL_HINT_VULKAN_LIBRARY, vk.c_str());
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         why = std::string("initialising video: ") + SDL_GetError();
