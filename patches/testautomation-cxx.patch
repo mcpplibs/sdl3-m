@@ -1,0 +1,341 @@
+SDL 3.4.18's test/testautomation*.c, made to compile as C++ (C++23), so that
+tools/run_conformance.py can build them against `import mcpplibs.mwrap.sdl3;`
+instead of <SDL3/SDL.h>. Applied with `git apply` to a copy in target/; the
+repository never holds upstream's test sources. Each change is what C++
+requires of C and nothing else:
+
+  - void * converted implicitly (SDL_malloc, SDL_GetClipboardData, userdata,
+    surface->pixels): an explicit cast to the pointer type;
+  - an int or Uint32 stored in an enum (SDL_AudioFormat, SDL_PixelFormat,
+    SDL_IOWhence, the stdio SEEK_END): an explicit cast, or the array typed as
+    the enum (testautomation_surface.c);
+  - a string literal passed as void * (SDL_SetPointerProperty): a cast;
+  - a function pointer passed as void * (SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER):
+    a cast;
+  - SDL_SECONDS_TO_NS(negative) + n, an unsigned value, initialising an
+    SDL_Time in a braced list (narrowing): a cast, as C converts it;
+  - a goto that crosses two initialised declarations (testautomation_video.c):
+    the declarations without initialisers, then assignments;
+  - "%"SIZE_FORMAT (a user-defined-literal suffix in C++11): a space.
+
+diff -ru a/test/testautomation_audio.c b/test/testautomation_audio.c
+--- a/test/testautomation_audio.c
++++ b/test/testautomation_audio.c
+@@ -669,7 +669,7 @@
+         SDL_strlcpy(message, "Invalid: ", 256);
+         if (i & 1) {
+             SDL_strlcat(message, " spec1.format", 256);
+-            spec1.format = 0;
++            spec1.format = (SDL_AudioFormat)0;
+         }
+         if (i & 2) {
+             SDL_strlcat(message, " spec1.channels", 256);
+@@ -681,7 +681,7 @@
+         }
+         if (i & 8) {
+             SDL_strlcat(message, " spec2.format", 256);
+-            spec2.format = 0;
++            spec2.format = (SDL_AudioFormat)0;
+         }
+         if (i & 16) {
+             SDL_strlcat(message, " spec2.channels", 256);
+@@ -1188,7 +1188,7 @@
+ 
+     int src_num = 65537 + 2048 + 48 + 256 + 100000;
+     int src_len = src_num * sizeof(float);
+-    float* src_data = SDL_malloc(src_len);
++    float* src_data = (float *)SDL_malloc(src_len);
+     int i, j;
+ 
+     SDLTest_AssertCheck(src_data != NULL, "Expected source buffer to be created.");
+diff -ru a/test/testautomation_blit.c b/test/testautomation_blit.c
+--- a/test/testautomation_blit.c
++++ b/test/testautomation_blit.c
+@@ -58,7 +58,7 @@
+  * Generates a stream of PRNG pixel data given length
+  */
+ static Uint32 *getNextRandomBuffer(const int width, const int height) {
+-    Uint32* buf = SDL_malloc(sizeof(Uint32) * width * height);
++    Uint32* buf = (Uint32 *)SDL_malloc(sizeof(Uint32) * width * height);
+     fillNextRandomBuffer(buf, width, height);
+     return buf;
+ }
+@@ -92,7 +92,7 @@
+     if (buffer_size < 0) {
+         return 0;
+     }
+-    return FNVHash(surface->pixels, buffer_size);
++    return FNVHash((Uint32 *)surface->pixels, buffer_size);
+ }
+ /* ================= Test Case Implementation ================== */
+ /**
+@@ -162,7 +162,7 @@
+     const int blit_height = 15;
+     int i;
+     const Uint32 correct_hash = 0x5d26be78;
+-    Uint32 *buf = SDL_malloc(blit_width * blit_height * sizeof(Uint32));
++    Uint32 *buf = (Uint32 *)SDL_malloc(blit_width * blit_height * sizeof(Uint32));
+     // Create blank source surface
+     SDL_Surface *sourceSurface = SDL_CreateSurface(blit_width, blit_height, SDL_PIXELFORMAT_RGBA8888);
+     // Create blank destination surface
+diff -ru a/test/testautomation_clipboard.c b/test/testautomation_clipboard.c
+--- a/test/testautomation_clipboard.c
++++ b/test/testautomation_clipboard.c
+@@ -181,7 +181,7 @@
+     SDLTest_AssertCheck(
+         boolResult,
+         "Verify has test text data, expected true, got false");
+-    text = SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_TEXT], &size);
++    text = (char *)SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_TEXT], &size);
+     SDLTest_AssertCheck(
+         text != NULL,
+         "Verify has test text data, expected valid result, got NULL");
+@@ -206,7 +206,7 @@
+     SDLTest_AssertCheck(
+         boolResult,
+         "Verify has test text data, expected true, got false");
+-    text = SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_CUSTOM_TEXT], &size);
++    text = (char *)SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_CUSTOM_TEXT], &size);
+     SDLTest_AssertCheck(
+         text != NULL,
+         "Verify has test text data, expected valid result, got NULL");
+@@ -293,7 +293,7 @@
+     SDLTest_AssertCheck(
+         boolResult,
+         "Verify has test text data, expected true, got false");
+-    text = SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_TEXT], &size);
++    text = (char *)SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_TEXT], &size);
+     SDLTest_AssertCheck(
+         text != NULL,
+         "Verify has test text data, expected valid result, got NULL");
+@@ -318,7 +318,7 @@
+     SDLTest_AssertCheck(
+         boolResult,
+         "Verify has test text data, expected true, got false");
+-    text = SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_CUSTOM_TEXT], &size);
++    text = (char *)SDL_GetClipboardData(test_mime_types[TEST_MIME_TYPE_CUSTOM_TEXT], &size);
+     SDLTest_AssertCheck(
+         text != NULL,
+         "Verify has test text data, expected valid result, got NULL");
+diff -ru a/test/testautomation_hints.c b/test/testautomation_hints.c
+--- a/test/testautomation_hints.c
++++ b/test/testautomation_hints.c
+@@ -77,7 +77,7 @@
+ 
+ static void SDLCALL hints_testHintChanged(void *userdata, const char *name, const char *oldValue, const char *hint)
+ {
+-    HintCallbackContext *context = userdata;
++    HintCallbackContext *context = (HintCallbackContext *)userdata;
+ 
+     context->name = name ? SDL_strdup(name) : NULL;
+     context->value = hint ? SDL_strdup(hint) : NULL;
+diff -ru a/test/testautomation_intrinsics.c b/test/testautomation_intrinsics.c
+--- a/test/testautomation_intrinsics.c
++++ b/test/testautomation_intrinsics.c
+@@ -23,9 +23,9 @@
+     size_t i;
+ 
+     *size = (size_t)SDLTest_RandomIntegerInRange(127, 999);
+-    *dest = SDL_malloc(sizeof(Uint32) * *size);
+-    *a = SDL_malloc(sizeof(Uint32) * *size);
+-    *b = SDL_malloc(sizeof(Uint32) * *size);
++    *dest = (Uint32 *)SDL_malloc(sizeof(Uint32) * *size);
++    *a = (Uint32 *)SDL_malloc(sizeof(Uint32) * *size);
++    *b = (Uint32 *)SDL_malloc(sizeof(Uint32) * *size);
+ 
+     if (!*dest || !*a || !*b) {
+         SDLTest_AssertCheck(false, "SDL_malloc failed");
+@@ -43,9 +43,9 @@
+     size_t i;
+ 
+     *size = (size_t)SDLTest_RandomIntegerInRange(127, 999);
+-    *dest = SDL_malloc(sizeof(float) * *size);
+-    *a = SDL_malloc(sizeof(float) * *size);
+-    *b = SDL_malloc(sizeof(float) * *size);
++    *dest = (float *)SDL_malloc(sizeof(float) * *size);
++    *a = (float *)SDL_malloc(sizeof(float) * *size);
++    *b = (float *)SDL_malloc(sizeof(float) * *size);
+ 
+     if (!*dest || !*a || !*b) {
+         SDLTest_AssertCheck(false, "SDL_malloc failed");
+@@ -64,9 +64,9 @@
+     size_t i;
+ 
+     *size = (size_t)SDLTest_RandomIntegerInRange(127, 999);
+-    *dest = SDL_malloc(sizeof(double) * *size);
+-    *a = SDL_malloc(sizeof(double) * *size);
+-    *b = SDL_malloc(sizeof(double) * *size);
++    *dest = (double *)SDL_malloc(sizeof(double) * *size);
++    *a = (double *)SDL_malloc(sizeof(double) * *size);
++    *b = (double *)SDL_malloc(sizeof(double) * *size);
+ 
+     if (!*dest || !*a || !*b) {
+         SDLTest_AssertCheck(false, "SDL_malloc failed");
+diff -ru a/test/testautomation_iostream.c b/test/testautomation_iostream.c
+--- a/test/testautomation_iostream.c
++++ b/test/testautomation_iostream.c
+@@ -506,7 +506,7 @@
+ 
+     /* Set the free function */
+     free_call_count = 0;
+-    result = SDL_SetPointerProperty(SDL_GetIOProperties(rw), SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER, test_free);
++    result = SDL_SetPointerProperty(SDL_GetIOProperties(rw), SDL_PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER, (void *)test_free);
+     SDLTest_AssertPass("Call to SDL_SetPointerProperty() succeeded");
+     SDLTest_AssertCheck(result == true, "Verify result value is true; got %d", result);
+ 
+@@ -697,7 +697,7 @@
+         SDLTest_AssertPass("Call to SDL_IOFromMem()");
+         rv_mem = SDL_ReadIO(iostrm_mem, buffer_mem, size * 6);
+         SDLTest_AssertPass("Call to SDL_ReadIO(mem, size=%d)", size * 6);
+-        sv_mem = SDL_SeekIO(iostrm_mem, 0, SEEK_END);
++        sv_mem = SDL_SeekIO(iostrm_mem, 0, (SDL_IOWhence)SEEK_END);
+         SDLTest_AssertPass("Call to SDL_SeekIO(mem,SEEK_END)");
+         result = SDL_CloseIO(iostrm_mem);
+         SDLTest_AssertPass("Call to SDL_CloseIO(mem)");
+@@ -708,7 +708,7 @@
+         SDLTest_AssertPass("Call to SDL_IOFromFile()");
+         rv_file = SDL_ReadIO(iostrm_file, buffer_file, size * 6);
+         SDLTest_AssertPass("Call to SDL_ReadIO(file, size=%d)", size * 6);
+-        sv_file = SDL_SeekIO(iostrm_file, 0, SEEK_END);
++        sv_file = SDL_SeekIO(iostrm_file, 0, (SDL_IOWhence)SEEK_END);
+         SDLTest_AssertPass("Call to SDL_SeekIO(file,SEEK_END)");
+         result = SDL_CloseIO(iostrm_file);
+         SDLTest_AssertPass("Call to SDL_CloseIO(file)");
+diff -ru a/test/testautomation_pixels.c b/test/testautomation_pixels.c
+--- a/test/testautomation_pixels.c
++++ b/test/testautomation_pixels.c
+@@ -770,7 +770,7 @@
+     SDL_ClearError();
+     SDLTest_AssertPass("Call to SDL_ClearError()");
+     for (i = 0; i < g_numInvalidPixelFormats; i++) {
+-        format = g_invalidPixelFormats[i];
++        format = (SDL_PixelFormat)g_invalidPixelFormats[i];
+         result = SDL_GetPixelFormatName(format);
+         SDLTest_AssertPass("Call to SDL_GetPixelFormatName(%d)", format);
+         SDLTest_AssertCheck(result != NULL, "Verify result is not NULL");
+@@ -858,7 +858,7 @@
+     for (i = 0; i < g_numInvalidPixelFormats; i++) {
+         SDL_ClearError();
+         SDLTest_AssertPass("Call to SDL_ClearError()");
+-        format = g_invalidPixelFormats[i];
++        format = (SDL_PixelFormat)g_invalidPixelFormats[i];
+         result = SDL_GetPixelFormatDetails(format);
+         SDLTest_AssertPass("Call to SDL_GetPixelFormatDetails(%d)", format);
+         SDLTest_AssertCheck(result == NULL, "Verify result is NULL");
+diff -ru a/test/testautomation_properties.c b/test/testautomation_properties.c
+--- a/test/testautomation_properties.c
++++ b/test/testautomation_properties.c
+@@ -292,7 +292,7 @@
+ 
+     SDLTest_AssertPass("Call to SDL_SetPointerProperty(cleanup)");
+     count = 0;
+-    SDL_SetPointerPropertyWithCleanup(props, "a", "0", cleanup, &count);
++    SDL_SetPointerPropertyWithCleanup(props, "a", (void *)"0", cleanup, &count);
+     SDL_ClearProperty(props, "a");
+     SDLTest_AssertCheck(count == 1,
+         "Verify cleanup for deleting property, got %d, expected 1", count);
+@@ -325,11 +325,11 @@
+ 
+     while (!data->done) {
+         SDL_LockProperties(data->props);
+-        SDL_SetPointerProperty(data->props, "a", "thread_loop");
++        SDL_SetPointerProperty(data->props, "a", (void *)"thread_loop");
+         SDL_UnlockProperties(data->props);
+     }
+     SDL_LockProperties(data->props);
+-    SDL_SetPointerProperty(data->props, "a", "thread_done");
++    SDL_SetPointerProperty(data->props, "a", (void *)"thread_done");
+     SDL_UnlockProperties(data->props);
+     return 0;
+ }
+@@ -343,7 +343,7 @@
+     data.done = false;
+     data.props = SDL_CreateProperties();
+     SDLTest_AssertPass("Setting property to 'init'");
+-    SDL_SetPointerProperty(data.props, "a", "init");
++    SDL_SetPointerProperty(data.props, "a", (void *)"init");
+     thread = SDL_CreateThread(properties_thread, "properties_thread", &data);
+     if (thread) {
+         SDLTest_AssertPass("Waiting for property to change to 'thread_loop'");
+@@ -363,7 +363,7 @@
+ 
+         SDLTest_AssertPass("Setting property to 'main'");
+         SDL_LockProperties(data.props);
+-        SDL_SetPointerProperty(data.props, "a", "main");
++        SDL_SetPointerProperty(data.props, "a", (void *)"main");
+         SDL_Delay(100);
+         value = SDL_GetPointerProperty(data.props, "a", NULL);
+         SDLTest_AssertCheck(value && SDL_strcmp((const char *)value, "main") == 0,
+diff -ru a/test/testautomation_stdlib.c b/test/testautomation_stdlib.c
+--- a/test/testautomation_stdlib.c
++++ b/test/testautomation_stdlib.c
+@@ -950,7 +950,7 @@
+     void *ptr;
+ 
+     for (i = 0; i < 2*sizeof(void *); ++i) {
+-        SDLTest_AssertPass("Call to SDL_aligned_alloc(%"SIZE_FORMAT")", i);
++        SDLTest_AssertPass("Call to SDL_aligned_alloc(%" SIZE_FORMAT ")", i);
+         ptr = SDL_aligned_alloc(i, 1);
+         if (i < sizeof(void *)) {
+             alignment = sizeof(void *);
+@@ -958,7 +958,7 @@
+             alignment = i;
+         }
+         SDLTest_AssertCheck(ptr != NULL, "Check output, expected non-NULL, got: %p", ptr);
+-        SDLTest_AssertCheck((((size_t)ptr) % alignment) == 0, "Check output, expected aligned pointer, actual offset: %"SIZE_FORMAT, (((size_t)ptr) % alignment));
++        SDLTest_AssertCheck((((size_t)ptr) % alignment) == 0, "Check output, expected aligned pointer, actual offset: %" SIZE_FORMAT, (((size_t)ptr) % alignment));
+         if (ptr != NULL) {
+             SDLTest_AssertPass("Filling memory to alignment value");
+             SDL_memset(ptr, 0xAA, alignment);
+diff -ru a/test/testautomation_surface.c b/test/testautomation_surface.c
+--- a/test/testautomation_surface.c
++++ b/test/testautomation_surface.c
+@@ -1020,7 +1020,7 @@
+  */
+ static int SDLCALL surface_testCompleteSurfaceConversion(void *arg)
+ {
+-    Uint32 pixel_formats[] = {
++    SDL_PixelFormat pixel_formats[] = {
+         SDL_PIXELFORMAT_INDEX8,
+         SDL_PIXELFORMAT_RGB332,
+         SDL_PIXELFORMAT_XRGB4444,
+@@ -1855,7 +1855,7 @@
+     SDLTest_AssertCheck(output->h == source->h, "Expected output->h == %d, got %d", source->h, output->h);
+     SDLTest_AssertCheck(output->format == SDL_PIXELFORMAT_INDEX8, "Expected output->format == SDL_PIXELFORMAT_INDEX8, got 0x%x (%s)", output->format, SDL_GetPixelFormatName(output->format));
+ 
+-    pixels = output->pixels;
++    pixels = (Uint8 *)output->pixels;
+     for (i = 0; i < SDL_arraysize(colors); i++) {
+         int idx = i;
+         Uint8 actual = pixels[idx];
+diff -ru a/test/testautomation_time.c b/test/testautomation_time.c
+--- a/test/testautomation_time.c
++++ b/test/testautomation_time.c
+@@ -21,10 +21,10 @@
+ #define FEB_29_2000_NS SDL_SECONDS_TO_NS(951782400)
+ 
+ /* 1955-11-05T01:21:59.03 */
+-#define NOV_5_1955_NS SDL_SECONDS_TO_NS(-446769481) + 3
++#define NOV_5_1955_NS (SDL_Time)(SDL_SECONDS_TO_NS(-446769481) + 3)
+ 
+ /* 1955-11-05T01:21:59.500000000 */
+-#define NOV_5_1955_1_NS SDL_SECONDS_TO_NS(-446769481) + 500000000
++#define NOV_5_1955_1_NS (SDL_Time)(SDL_SECONDS_TO_NS(-446769481) + 500000000)
+ 
+ /* Test case functions */
+ 
+diff -ru a/test/testautomation_video.c b/test/testautomation_video.c
+--- a/test/testautomation_video.c
++++ b/test/testautomation_video.c
+@@ -2354,8 +2354,9 @@
+         SDLTest_AssertCheck(desiredY == currentY, "Verify returned Y coordinate; expected: %d, got: %d", previousY, currentY);
+     }
+ 
+-    int previousW = desiredW + 1;
+-    int previousH = desiredH + 1;
++    int previousW, previousH;
++    previousW = desiredW + 1;
++    previousH = desiredH + 1;
+     SDL_GetWindowSize(window, &previousW, &previousH);
+     SDLTest_AssertPass("Call to SDL_GetWindowSize()");
+     SDLTest_AssertCheck(desiredW == currentW, "Verify returned width; expected: %d, got: %d", previousW, currentW);

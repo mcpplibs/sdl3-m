@@ -3287,31 +3287,31 @@ inline SDL_Thread * f_SDL_CreateThreadWithProperties(SDL_PropertiesID props) { r
 constexpr auto f_SDL_DEFINE_AUDIO_FORMAT(int sign, int bigendian, int flt, int size) { return SDL_DEFINE_AUDIO_FORMAT(sign, bigendian, flt, size); }
 #endif
 #ifdef SDL_AUDIO_BITSIZE
-constexpr auto f_SDL_AUDIO_BITSIZE(SDL_AudioFormat x) { return SDL_AUDIO_BITSIZE(x); }
+template <class T> constexpr auto f_SDL_AUDIO_BITSIZE(T x) { return SDL_AUDIO_BITSIZE(x); }
 #endif
 #ifdef SDL_AUDIO_BYTESIZE
-constexpr auto f_SDL_AUDIO_BYTESIZE(SDL_AudioFormat x) { return SDL_AUDIO_BYTESIZE(x); }
+template <class T> constexpr auto f_SDL_AUDIO_BYTESIZE(T x) { return SDL_AUDIO_BYTESIZE(x); }
 #endif
 #ifdef SDL_AUDIO_ISFLOAT
-constexpr auto f_SDL_AUDIO_ISFLOAT(SDL_AudioFormat x) { return SDL_AUDIO_ISFLOAT(x); }
+template <class T> constexpr auto f_SDL_AUDIO_ISFLOAT(T x) { return SDL_AUDIO_ISFLOAT(x); }
 #endif
 #ifdef SDL_AUDIO_ISBIGENDIAN
-constexpr auto f_SDL_AUDIO_ISBIGENDIAN(SDL_AudioFormat x) { return SDL_AUDIO_ISBIGENDIAN(x); }
+template <class T> constexpr auto f_SDL_AUDIO_ISBIGENDIAN(T x) { return SDL_AUDIO_ISBIGENDIAN(x); }
 #endif
 #ifdef SDL_AUDIO_ISLITTLEENDIAN
-constexpr auto f_SDL_AUDIO_ISLITTLEENDIAN(SDL_AudioFormat x) { return SDL_AUDIO_ISLITTLEENDIAN(x); }
+template <class T> constexpr auto f_SDL_AUDIO_ISLITTLEENDIAN(T x) { return SDL_AUDIO_ISLITTLEENDIAN(x); }
 #endif
 #ifdef SDL_AUDIO_ISSIGNED
-constexpr auto f_SDL_AUDIO_ISSIGNED(SDL_AudioFormat x) { return SDL_AUDIO_ISSIGNED(x); }
+template <class T> constexpr auto f_SDL_AUDIO_ISSIGNED(T x) { return SDL_AUDIO_ISSIGNED(x); }
 #endif
 #ifdef SDL_AUDIO_ISINT
-constexpr auto f_SDL_AUDIO_ISINT(SDL_AudioFormat x) { return SDL_AUDIO_ISINT(x); }
+template <class T> constexpr auto f_SDL_AUDIO_ISINT(T x) { return SDL_AUDIO_ISINT(x); }
 #endif
 #ifdef SDL_AUDIO_ISUNSIGNED
-constexpr auto f_SDL_AUDIO_ISUNSIGNED(SDL_AudioFormat x) { return SDL_AUDIO_ISUNSIGNED(x); }
+template <class T> constexpr auto f_SDL_AUDIO_ISUNSIGNED(T x) { return SDL_AUDIO_ISUNSIGNED(x); }
 #endif
 #ifdef SDL_AUDIO_FRAMESIZE
-constexpr auto f_SDL_AUDIO_FRAMESIZE(const SDL_AudioSpec &x) { return SDL_AUDIO_FRAMESIZE(x); }
+template <class T> constexpr auto f_SDL_AUDIO_FRAMESIZE(const T &x) { return SDL_AUDIO_FRAMESIZE(x); }
 #endif
 #ifdef SDL_DEFINE_PIXELFOURCC
 constexpr Uint32 f_SDL_DEFINE_PIXELFOURCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D) { return SDL_DEFINE_PIXELFOURCC(A, B, C, D); }
@@ -3320,100 +3320,100 @@ constexpr Uint32 f_SDL_DEFINE_PIXELFOURCC(Uint8 A, Uint8 B, Uint8 C, Uint8 D) { 
 constexpr auto f_SDL_DEFINE_PIXELFORMAT(int type, int order, int layout, int bits, int bytes) { return SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes); }
 #endif
 #ifdef SDL_PIXELFLAG
-constexpr auto f_SDL_PIXELFLAG(SDL_PixelFormat format) { return SDL_PIXELFLAG(format); }
+template <class T> constexpr auto f_SDL_PIXELFLAG(T format) { return SDL_PIXELFLAG(format); }
 #endif
 #ifdef SDL_PIXELTYPE
-constexpr auto f_SDL_PIXELTYPE(SDL_PixelFormat format) { return SDL_PIXELTYPE(format); }
+template <class T> constexpr auto f_SDL_PIXELTYPE(T format) { return SDL_PIXELTYPE(format); }
 #endif
 #ifdef SDL_PIXELORDER
-constexpr auto f_SDL_PIXELORDER(SDL_PixelFormat format) { return SDL_PIXELORDER(format); }
+template <class T> constexpr auto f_SDL_PIXELORDER(T format) { return SDL_PIXELORDER(format); }
 #endif
 #ifdef SDL_PIXELLAYOUT
-constexpr auto f_SDL_PIXELLAYOUT(SDL_PixelFormat format) { return SDL_PIXELLAYOUT(format); }
+template <class T> constexpr auto f_SDL_PIXELLAYOUT(T format) { return SDL_PIXELLAYOUT(format); }
 #endif
 #ifdef SDL_BITSPERPIXEL
-constexpr auto f_SDL_BITSPERPIXEL(SDL_PixelFormat format) { return SDL_BITSPERPIXEL(format); }
+template <class T> constexpr auto f_SDL_BITSPERPIXEL(T format) { return SDL_BITSPERPIXEL(format); }
 #endif
 #ifdef SDL_BYTESPERPIXEL
-constexpr auto f_SDL_BYTESPERPIXEL(SDL_PixelFormat format) { return SDL_BYTESPERPIXEL(format); }
+template <class T> constexpr auto f_SDL_BYTESPERPIXEL(T format) { return SDL_BYTESPERPIXEL(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_INDEXED
-constexpr auto f_SDL_ISPIXELFORMAT_INDEXED(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_INDEXED(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_INDEXED(T format) { return SDL_ISPIXELFORMAT_INDEXED(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_PACKED
-constexpr auto f_SDL_ISPIXELFORMAT_PACKED(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_PACKED(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_PACKED(T format) { return SDL_ISPIXELFORMAT_PACKED(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_ARRAY
-constexpr auto f_SDL_ISPIXELFORMAT_ARRAY(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_ARRAY(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_ARRAY(T format) { return SDL_ISPIXELFORMAT_ARRAY(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_10BIT
-constexpr auto f_SDL_ISPIXELFORMAT_10BIT(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_10BIT(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_10BIT(T format) { return SDL_ISPIXELFORMAT_10BIT(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_FLOAT
-constexpr auto f_SDL_ISPIXELFORMAT_FLOAT(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_FLOAT(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_FLOAT(T format) { return SDL_ISPIXELFORMAT_FLOAT(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_ALPHA
-constexpr auto f_SDL_ISPIXELFORMAT_ALPHA(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_ALPHA(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_ALPHA(T format) { return SDL_ISPIXELFORMAT_ALPHA(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_FOURCC
-constexpr auto f_SDL_ISPIXELFORMAT_FOURCC(SDL_PixelFormat format) { return SDL_ISPIXELFORMAT_FOURCC(format); }
+template <class T> constexpr auto f_SDL_ISPIXELFORMAT_FOURCC(T format) { return SDL_ISPIXELFORMAT_FOURCC(format); }
 #endif
 #ifdef SDL_DEFINE_COLORSPACE
 constexpr auto f_SDL_DEFINE_COLORSPACE(int type, int range, int primaries, int transfer, int matrix, int chroma) { return SDL_DEFINE_COLORSPACE(type, range, primaries, transfer, matrix, chroma); }
 #endif
 #ifdef SDL_COLORSPACETYPE
-constexpr auto f_SDL_COLORSPACETYPE(SDL_Colorspace cspace) { return SDL_COLORSPACETYPE(cspace); }
+template <class T> constexpr auto f_SDL_COLORSPACETYPE(T cspace) { return SDL_COLORSPACETYPE(cspace); }
 #endif
 #ifdef SDL_COLORSPACERANGE
-constexpr auto f_SDL_COLORSPACERANGE(SDL_Colorspace cspace) { return SDL_COLORSPACERANGE(cspace); }
+template <class T> constexpr auto f_SDL_COLORSPACERANGE(T cspace) { return SDL_COLORSPACERANGE(cspace); }
 #endif
 #ifdef SDL_COLORSPACECHROMA
-constexpr auto f_SDL_COLORSPACECHROMA(SDL_Colorspace cspace) { return SDL_COLORSPACECHROMA(cspace); }
+template <class T> constexpr auto f_SDL_COLORSPACECHROMA(T cspace) { return SDL_COLORSPACECHROMA(cspace); }
 #endif
 #ifdef SDL_COLORSPACEPRIMARIES
-constexpr auto f_SDL_COLORSPACEPRIMARIES(SDL_Colorspace cspace) { return SDL_COLORSPACEPRIMARIES(cspace); }
+template <class T> constexpr auto f_SDL_COLORSPACEPRIMARIES(T cspace) { return SDL_COLORSPACEPRIMARIES(cspace); }
 #endif
 #ifdef SDL_COLORSPACETRANSFER
-constexpr auto f_SDL_COLORSPACETRANSFER(SDL_Colorspace cspace) { return SDL_COLORSPACETRANSFER(cspace); }
+template <class T> constexpr auto f_SDL_COLORSPACETRANSFER(T cspace) { return SDL_COLORSPACETRANSFER(cspace); }
 #endif
 #ifdef SDL_COLORSPACEMATRIX
-constexpr auto f_SDL_COLORSPACEMATRIX(SDL_Colorspace cspace) { return SDL_COLORSPACEMATRIX(cspace); }
+template <class T> constexpr auto f_SDL_COLORSPACEMATRIX(T cspace) { return SDL_COLORSPACEMATRIX(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_MATRIX_BT601
-constexpr auto f_SDL_ISCOLORSPACE_MATRIX_BT601(SDL_Colorspace cspace) { return SDL_ISCOLORSPACE_MATRIX_BT601(cspace); }
+template <class T> constexpr auto f_SDL_ISCOLORSPACE_MATRIX_BT601(T cspace) { return SDL_ISCOLORSPACE_MATRIX_BT601(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_MATRIX_BT709
-constexpr auto f_SDL_ISCOLORSPACE_MATRIX_BT709(SDL_Colorspace cspace) { return SDL_ISCOLORSPACE_MATRIX_BT709(cspace); }
+template <class T> constexpr auto f_SDL_ISCOLORSPACE_MATRIX_BT709(T cspace) { return SDL_ISCOLORSPACE_MATRIX_BT709(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_MATRIX_BT2020_NCL
-constexpr auto f_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(SDL_Colorspace cspace) { return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace); }
+template <class T> constexpr auto f_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(T cspace) { return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_LIMITED_RANGE
-constexpr auto f_SDL_ISCOLORSPACE_LIMITED_RANGE(SDL_Colorspace cspace) { return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace); }
+template <class T> constexpr auto f_SDL_ISCOLORSPACE_LIMITED_RANGE(T cspace) { return SDL_ISCOLORSPACE_LIMITED_RANGE(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_FULL_RANGE
-constexpr auto f_SDL_ISCOLORSPACE_FULL_RANGE(SDL_Colorspace cspace) { return SDL_ISCOLORSPACE_FULL_RANGE(cspace); }
+template <class T> constexpr auto f_SDL_ISCOLORSPACE_FULL_RANGE(T cspace) { return SDL_ISCOLORSPACE_FULL_RANGE(cspace); }
 #endif
 #ifdef SDL_MUSTLOCK
 constexpr bool f_SDL_MUSTLOCK(const SDL_Surface *S) { return SDL_MUSTLOCK(S); }
 #endif
 #ifdef SDL_WINDOWPOS_UNDEFINED_DISPLAY
-constexpr auto f_SDL_WINDOWPOS_UNDEFINED_DISPLAY(SDL_DisplayID X) { return SDL_WINDOWPOS_UNDEFINED_DISPLAY(X); }
+template <class T> constexpr auto f_SDL_WINDOWPOS_UNDEFINED_DISPLAY(T X) { return SDL_WINDOWPOS_UNDEFINED_DISPLAY(X); }
 #endif
 #ifdef SDL_WINDOWPOS_ISUNDEFINED
-constexpr bool f_SDL_WINDOWPOS_ISUNDEFINED(int X) { return SDL_WINDOWPOS_ISUNDEFINED(X); }
+template <class T> constexpr auto f_SDL_WINDOWPOS_ISUNDEFINED(T X) { return SDL_WINDOWPOS_ISUNDEFINED(X); }
 #endif
 #ifdef SDL_WINDOWPOS_CENTERED_DISPLAY
-constexpr auto f_SDL_WINDOWPOS_CENTERED_DISPLAY(SDL_DisplayID X) { return SDL_WINDOWPOS_CENTERED_DISPLAY(X); }
+template <class T> constexpr auto f_SDL_WINDOWPOS_CENTERED_DISPLAY(T X) { return SDL_WINDOWPOS_CENTERED_DISPLAY(X); }
 #endif
 #ifdef SDL_WINDOWPOS_ISCENTERED
-constexpr bool f_SDL_WINDOWPOS_ISCENTERED(int X) { return SDL_WINDOWPOS_ISCENTERED(X); }
+template <class T> constexpr auto f_SDL_WINDOWPOS_ISCENTERED(T X) { return SDL_WINDOWPOS_ISCENTERED(X); }
 #endif
 #ifdef SDL_SCANCODE_TO_KEYCODE
-constexpr SDL_Keycode f_SDL_SCANCODE_TO_KEYCODE(SDL_Scancode X) { return SDL_SCANCODE_TO_KEYCODE(X); }
+template <class T> constexpr auto f_SDL_SCANCODE_TO_KEYCODE(T X) { return SDL_SCANCODE_TO_KEYCODE(X); }
 #endif
 #ifdef SDL_BUTTON_MASK
-constexpr auto f_SDL_BUTTON_MASK(int X) { return SDL_BUTTON_MASK(X); }
+template <class T> constexpr auto f_SDL_BUTTON_MASK(T X) { return SDL_BUTTON_MASK(X); }
 #endif
 #ifdef SDL_SECONDS_TO_NS
 template <class T> constexpr auto f_SDL_SECONDS_TO_NS(T S) { return SDL_SECONDS_TO_NS(S); }
@@ -7895,39 +7895,39 @@ constexpr auto SDL_DEFINE_AUDIO_FORMAT(int sign, int bigendian, int flt, int siz
 #endif
 #ifdef SDL_AUDIO_BITSIZE
 #undef SDL_AUDIO_BITSIZE
-constexpr auto SDL_AUDIO_BITSIZE(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_BITSIZE(x); }
+template <class T> constexpr auto SDL_AUDIO_BITSIZE(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_BITSIZE(x); }
 #endif
 #ifdef SDL_AUDIO_BYTESIZE
 #undef SDL_AUDIO_BYTESIZE
-constexpr auto SDL_AUDIO_BYTESIZE(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_BYTESIZE(x); }
+template <class T> constexpr auto SDL_AUDIO_BYTESIZE(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_BYTESIZE(x); }
 #endif
 #ifdef SDL_AUDIO_ISFLOAT
 #undef SDL_AUDIO_ISFLOAT
-constexpr auto SDL_AUDIO_ISFLOAT(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISFLOAT(x); }
+template <class T> constexpr auto SDL_AUDIO_ISFLOAT(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISFLOAT(x); }
 #endif
 #ifdef SDL_AUDIO_ISBIGENDIAN
 #undef SDL_AUDIO_ISBIGENDIAN
-constexpr auto SDL_AUDIO_ISBIGENDIAN(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISBIGENDIAN(x); }
+template <class T> constexpr auto SDL_AUDIO_ISBIGENDIAN(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISBIGENDIAN(x); }
 #endif
 #ifdef SDL_AUDIO_ISLITTLEENDIAN
 #undef SDL_AUDIO_ISLITTLEENDIAN
-constexpr auto SDL_AUDIO_ISLITTLEENDIAN(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISLITTLEENDIAN(x); }
+template <class T> constexpr auto SDL_AUDIO_ISLITTLEENDIAN(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISLITTLEENDIAN(x); }
 #endif
 #ifdef SDL_AUDIO_ISSIGNED
 #undef SDL_AUDIO_ISSIGNED
-constexpr auto SDL_AUDIO_ISSIGNED(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISSIGNED(x); }
+template <class T> constexpr auto SDL_AUDIO_ISSIGNED(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISSIGNED(x); }
 #endif
 #ifdef SDL_AUDIO_ISINT
 #undef SDL_AUDIO_ISINT
-constexpr auto SDL_AUDIO_ISINT(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISINT(x); }
+template <class T> constexpr auto SDL_AUDIO_ISINT(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISINT(x); }
 #endif
 #ifdef SDL_AUDIO_ISUNSIGNED
 #undef SDL_AUDIO_ISUNSIGNED
-constexpr auto SDL_AUDIO_ISUNSIGNED(SDL_AudioFormat x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISUNSIGNED(x); }
+template <class T> constexpr auto SDL_AUDIO_ISUNSIGNED(T x) { return mwrap_sdl3_macros::f_SDL_AUDIO_ISUNSIGNED(x); }
 #endif
 #ifdef SDL_AUDIO_FRAMESIZE
 #undef SDL_AUDIO_FRAMESIZE
-constexpr auto SDL_AUDIO_FRAMESIZE(const SDL_AudioSpec &x) { return mwrap_sdl3_macros::f_SDL_AUDIO_FRAMESIZE(x); }
+template <class T> constexpr auto SDL_AUDIO_FRAMESIZE(const T &x) { return mwrap_sdl3_macros::f_SDL_AUDIO_FRAMESIZE(x); }
 #endif
 #ifdef SDL_DEFINE_PIXELFOURCC
 #undef SDL_DEFINE_PIXELFOURCC
@@ -7939,55 +7939,55 @@ constexpr auto SDL_DEFINE_PIXELFORMAT(int type, int order, int layout, int bits,
 #endif
 #ifdef SDL_PIXELFLAG
 #undef SDL_PIXELFLAG
-constexpr auto SDL_PIXELFLAG(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_PIXELFLAG(format); }
+template <class T> constexpr auto SDL_PIXELFLAG(T format) { return mwrap_sdl3_macros::f_SDL_PIXELFLAG(format); }
 #endif
 #ifdef SDL_PIXELTYPE
 #undef SDL_PIXELTYPE
-constexpr auto SDL_PIXELTYPE(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_PIXELTYPE(format); }
+template <class T> constexpr auto SDL_PIXELTYPE(T format) { return mwrap_sdl3_macros::f_SDL_PIXELTYPE(format); }
 #endif
 #ifdef SDL_PIXELORDER
 #undef SDL_PIXELORDER
-constexpr auto SDL_PIXELORDER(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_PIXELORDER(format); }
+template <class T> constexpr auto SDL_PIXELORDER(T format) { return mwrap_sdl3_macros::f_SDL_PIXELORDER(format); }
 #endif
 #ifdef SDL_PIXELLAYOUT
 #undef SDL_PIXELLAYOUT
-constexpr auto SDL_PIXELLAYOUT(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_PIXELLAYOUT(format); }
+template <class T> constexpr auto SDL_PIXELLAYOUT(T format) { return mwrap_sdl3_macros::f_SDL_PIXELLAYOUT(format); }
 #endif
 #ifdef SDL_BITSPERPIXEL
 #undef SDL_BITSPERPIXEL
-constexpr auto SDL_BITSPERPIXEL(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_BITSPERPIXEL(format); }
+template <class T> constexpr auto SDL_BITSPERPIXEL(T format) { return mwrap_sdl3_macros::f_SDL_BITSPERPIXEL(format); }
 #endif
 #ifdef SDL_BYTESPERPIXEL
 #undef SDL_BYTESPERPIXEL
-constexpr auto SDL_BYTESPERPIXEL(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_BYTESPERPIXEL(format); }
+template <class T> constexpr auto SDL_BYTESPERPIXEL(T format) { return mwrap_sdl3_macros::f_SDL_BYTESPERPIXEL(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_INDEXED
 #undef SDL_ISPIXELFORMAT_INDEXED
-constexpr auto SDL_ISPIXELFORMAT_INDEXED(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_INDEXED(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_INDEXED(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_INDEXED(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_PACKED
 #undef SDL_ISPIXELFORMAT_PACKED
-constexpr auto SDL_ISPIXELFORMAT_PACKED(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_PACKED(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_PACKED(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_PACKED(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_ARRAY
 #undef SDL_ISPIXELFORMAT_ARRAY
-constexpr auto SDL_ISPIXELFORMAT_ARRAY(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_ARRAY(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_ARRAY(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_ARRAY(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_10BIT
 #undef SDL_ISPIXELFORMAT_10BIT
-constexpr auto SDL_ISPIXELFORMAT_10BIT(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_10BIT(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_10BIT(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_10BIT(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_FLOAT
 #undef SDL_ISPIXELFORMAT_FLOAT
-constexpr auto SDL_ISPIXELFORMAT_FLOAT(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_FLOAT(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_FLOAT(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_FLOAT(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_ALPHA
 #undef SDL_ISPIXELFORMAT_ALPHA
-constexpr auto SDL_ISPIXELFORMAT_ALPHA(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_ALPHA(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_ALPHA(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_ALPHA(format); }
 #endif
 #ifdef SDL_ISPIXELFORMAT_FOURCC
 #undef SDL_ISPIXELFORMAT_FOURCC
-constexpr auto SDL_ISPIXELFORMAT_FOURCC(SDL_PixelFormat format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_FOURCC(format); }
+template <class T> constexpr auto SDL_ISPIXELFORMAT_FOURCC(T format) { return mwrap_sdl3_macros::f_SDL_ISPIXELFORMAT_FOURCC(format); }
 #endif
 #ifdef SDL_DEFINE_COLORSPACE
 #undef SDL_DEFINE_COLORSPACE
@@ -7995,47 +7995,47 @@ constexpr auto SDL_DEFINE_COLORSPACE(int type, int range, int primaries, int tra
 #endif
 #ifdef SDL_COLORSPACETYPE
 #undef SDL_COLORSPACETYPE
-constexpr auto SDL_COLORSPACETYPE(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACETYPE(cspace); }
+template <class T> constexpr auto SDL_COLORSPACETYPE(T cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACETYPE(cspace); }
 #endif
 #ifdef SDL_COLORSPACERANGE
 #undef SDL_COLORSPACERANGE
-constexpr auto SDL_COLORSPACERANGE(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACERANGE(cspace); }
+template <class T> constexpr auto SDL_COLORSPACERANGE(T cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACERANGE(cspace); }
 #endif
 #ifdef SDL_COLORSPACECHROMA
 #undef SDL_COLORSPACECHROMA
-constexpr auto SDL_COLORSPACECHROMA(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACECHROMA(cspace); }
+template <class T> constexpr auto SDL_COLORSPACECHROMA(T cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACECHROMA(cspace); }
 #endif
 #ifdef SDL_COLORSPACEPRIMARIES
 #undef SDL_COLORSPACEPRIMARIES
-constexpr auto SDL_COLORSPACEPRIMARIES(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACEPRIMARIES(cspace); }
+template <class T> constexpr auto SDL_COLORSPACEPRIMARIES(T cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACEPRIMARIES(cspace); }
 #endif
 #ifdef SDL_COLORSPACETRANSFER
 #undef SDL_COLORSPACETRANSFER
-constexpr auto SDL_COLORSPACETRANSFER(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACETRANSFER(cspace); }
+template <class T> constexpr auto SDL_COLORSPACETRANSFER(T cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACETRANSFER(cspace); }
 #endif
 #ifdef SDL_COLORSPACEMATRIX
 #undef SDL_COLORSPACEMATRIX
-constexpr auto SDL_COLORSPACEMATRIX(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACEMATRIX(cspace); }
+template <class T> constexpr auto SDL_COLORSPACEMATRIX(T cspace) { return mwrap_sdl3_macros::f_SDL_COLORSPACEMATRIX(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_MATRIX_BT601
 #undef SDL_ISCOLORSPACE_MATRIX_BT601
-constexpr auto SDL_ISCOLORSPACE_MATRIX_BT601(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_MATRIX_BT601(cspace); }
+template <class T> constexpr auto SDL_ISCOLORSPACE_MATRIX_BT601(T cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_MATRIX_BT601(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_MATRIX_BT709
 #undef SDL_ISCOLORSPACE_MATRIX_BT709
-constexpr auto SDL_ISCOLORSPACE_MATRIX_BT709(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_MATRIX_BT709(cspace); }
+template <class T> constexpr auto SDL_ISCOLORSPACE_MATRIX_BT709(T cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_MATRIX_BT709(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_MATRIX_BT2020_NCL
 #undef SDL_ISCOLORSPACE_MATRIX_BT2020_NCL
-constexpr auto SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace); }
+template <class T> constexpr auto SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(T cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_LIMITED_RANGE
 #undef SDL_ISCOLORSPACE_LIMITED_RANGE
-constexpr auto SDL_ISCOLORSPACE_LIMITED_RANGE(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_LIMITED_RANGE(cspace); }
+template <class T> constexpr auto SDL_ISCOLORSPACE_LIMITED_RANGE(T cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_LIMITED_RANGE(cspace); }
 #endif
 #ifdef SDL_ISCOLORSPACE_FULL_RANGE
 #undef SDL_ISCOLORSPACE_FULL_RANGE
-constexpr auto SDL_ISCOLORSPACE_FULL_RANGE(SDL_Colorspace cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_FULL_RANGE(cspace); }
+template <class T> constexpr auto SDL_ISCOLORSPACE_FULL_RANGE(T cspace) { return mwrap_sdl3_macros::f_SDL_ISCOLORSPACE_FULL_RANGE(cspace); }
 #endif
 #ifdef SDL_MUSTLOCK
 #undef SDL_MUSTLOCK
@@ -8043,27 +8043,27 @@ constexpr bool SDL_MUSTLOCK(const SDL_Surface *S) { return mwrap_sdl3_macros::f_
 #endif
 #ifdef SDL_WINDOWPOS_UNDEFINED_DISPLAY
 #undef SDL_WINDOWPOS_UNDEFINED_DISPLAY
-constexpr auto SDL_WINDOWPOS_UNDEFINED_DISPLAY(SDL_DisplayID X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_UNDEFINED_DISPLAY(X); }
+template <class T> constexpr auto SDL_WINDOWPOS_UNDEFINED_DISPLAY(T X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_UNDEFINED_DISPLAY(X); }
 #endif
 #ifdef SDL_WINDOWPOS_ISUNDEFINED
 #undef SDL_WINDOWPOS_ISUNDEFINED
-constexpr bool SDL_WINDOWPOS_ISUNDEFINED(int X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_ISUNDEFINED(X); }
+template <class T> constexpr auto SDL_WINDOWPOS_ISUNDEFINED(T X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_ISUNDEFINED(X); }
 #endif
 #ifdef SDL_WINDOWPOS_CENTERED_DISPLAY
 #undef SDL_WINDOWPOS_CENTERED_DISPLAY
-constexpr auto SDL_WINDOWPOS_CENTERED_DISPLAY(SDL_DisplayID X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_CENTERED_DISPLAY(X); }
+template <class T> constexpr auto SDL_WINDOWPOS_CENTERED_DISPLAY(T X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_CENTERED_DISPLAY(X); }
 #endif
 #ifdef SDL_WINDOWPOS_ISCENTERED
 #undef SDL_WINDOWPOS_ISCENTERED
-constexpr bool SDL_WINDOWPOS_ISCENTERED(int X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_ISCENTERED(X); }
+template <class T> constexpr auto SDL_WINDOWPOS_ISCENTERED(T X) { return mwrap_sdl3_macros::f_SDL_WINDOWPOS_ISCENTERED(X); }
 #endif
 #ifdef SDL_SCANCODE_TO_KEYCODE
 #undef SDL_SCANCODE_TO_KEYCODE
-constexpr SDL_Keycode SDL_SCANCODE_TO_KEYCODE(SDL_Scancode X) { return mwrap_sdl3_macros::f_SDL_SCANCODE_TO_KEYCODE(X); }
+template <class T> constexpr auto SDL_SCANCODE_TO_KEYCODE(T X) { return mwrap_sdl3_macros::f_SDL_SCANCODE_TO_KEYCODE(X); }
 #endif
 #ifdef SDL_BUTTON_MASK
 #undef SDL_BUTTON_MASK
-constexpr auto SDL_BUTTON_MASK(int X) { return mwrap_sdl3_macros::f_SDL_BUTTON_MASK(X); }
+template <class T> constexpr auto SDL_BUTTON_MASK(T X) { return mwrap_sdl3_macros::f_SDL_BUTTON_MASK(X); }
 #endif
 #ifdef SDL_SECONDS_TO_NS
 #undef SDL_SECONDS_TO_NS

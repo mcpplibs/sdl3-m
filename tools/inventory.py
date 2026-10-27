@@ -312,6 +312,11 @@ def declarations(code: str, sdlcall: str = 'SDLCALL', force_inline: str = 'SDL_F
                 inner = body.index('{') + 1
                 decls += _enumerators(body[inner:_matching(body, inner - 1)], off + inner)
             continue
+        # SDL_test.h declares its functions without `extern`.
+        m = re.search(r'\b' + re.escape(sdlcall) + r'\s+(' + IDENT + r')\s*\(', body)
+        if m and not body.endswith('}'):
+            decls.append(Decl('function', m.group(1), off + m.start(1)))
+            continue
         if known_statement and known_statement(body):
             continue
         unknown.append((body, off))

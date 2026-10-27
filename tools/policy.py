@@ -96,9 +96,12 @@ ADAPTED = {
 #   'outofline' — defined in src/macros.cpp, as it may call a static inline
 #                 function of the header (SDL_Swap16 on compilers without
 #                 __builtin_bswap16, SDL_SwapFloat).
-# Template parameters where the macro is generic over its arguments' types
-# (SDL_min, SDL_zero, the time conversions ...); otherwise the parameter
-# types SDL documents.
+# Template parameters where the macro is generic over its arguments' types:
+# SDL_min, SDL_zero, the time conversions, and the macros that take a value
+# apart (SDL_AUDIO_BITSIZE, SDL_PIXELTYPE, SDL_COLORSPACERANGE ...), which
+# upstream itself applies to plain integers (SDL_AUDIO_BITSIZE(8)) as well
+# as to the enums: the result has the macro's type for either. Otherwise the
+# parameter types SDL documents.
 FUNCTION_MACROS = {
     # SDL_stdinc.h
     'SDL_arraysize': ('template <class T, size_t N>', 'size_t', 'const T (&array)[N]', 'constexpr'),
@@ -139,25 +142,25 @@ FUNCTION_MACROS = {
     'SDL_CreateThreadWithProperties': ('', 'SDL_Thread *', 'SDL_PropertiesID props', 'inline'),
     # SDL_audio.h
     'SDL_DEFINE_AUDIO_FORMAT': ('', 'auto', 'int sign, int bigendian, int flt, int size', 'constexpr'),
-    'SDL_AUDIO_BITSIZE': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_BYTESIZE': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_ISFLOAT': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_ISBIGENDIAN': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_ISLITTLEENDIAN': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_ISSIGNED': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_ISINT': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_ISUNSIGNED': ('', 'auto', 'SDL_AudioFormat x', 'constexpr'),
-    'SDL_AUDIO_FRAMESIZE': ('', 'auto', 'const SDL_AudioSpec &x', 'constexpr'),
+    'SDL_AUDIO_BITSIZE': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_BYTESIZE': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_ISFLOAT': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_ISBIGENDIAN': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_ISLITTLEENDIAN': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_ISSIGNED': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_ISINT': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_ISUNSIGNED': ('template <class T>', 'auto', 'T x', 'constexpr'),
+    'SDL_AUDIO_FRAMESIZE': ('template <class T>', 'auto', 'const T &x', 'constexpr'),
     # SDL_pixels.h
     'SDL_DEFINE_PIXELFOURCC': ('', 'Uint32', 'Uint8 A, Uint8 B, Uint8 C, Uint8 D', 'constexpr'),
     'SDL_DEFINE_PIXELFORMAT': ('', 'auto', 'int type, int order, int layout, int bits, int bytes', 'constexpr'),
-    **{n: ('', 'auto', 'SDL_PixelFormat format', 'constexpr') for n in (
+    **{n: ('template <class T>', 'auto', 'T format', 'constexpr') for n in (
         'SDL_PIXELFLAG', 'SDL_PIXELTYPE', 'SDL_PIXELORDER', 'SDL_PIXELLAYOUT', 'SDL_BITSPERPIXEL',
         'SDL_BYTESPERPIXEL', 'SDL_ISPIXELFORMAT_INDEXED', 'SDL_ISPIXELFORMAT_PACKED', 'SDL_ISPIXELFORMAT_ARRAY',
         'SDL_ISPIXELFORMAT_10BIT', 'SDL_ISPIXELFORMAT_FLOAT', 'SDL_ISPIXELFORMAT_ALPHA', 'SDL_ISPIXELFORMAT_FOURCC')},
     'SDL_DEFINE_COLORSPACE': ('', 'auto', 'int type, int range, int primaries, int transfer, int matrix, int chroma',
                               'constexpr'),
-    **{n: ('', 'auto', 'SDL_Colorspace cspace', 'constexpr') for n in (
+    **{n: ('template <class T>', 'auto', 'T cspace', 'constexpr') for n in (
         'SDL_COLORSPACETYPE', 'SDL_COLORSPACERANGE', 'SDL_COLORSPACECHROMA', 'SDL_COLORSPACEPRIMARIES',
         'SDL_COLORSPACETRANSFER', 'SDL_COLORSPACEMATRIX', 'SDL_ISCOLORSPACE_MATRIX_BT601',
         'SDL_ISCOLORSPACE_MATRIX_BT709', 'SDL_ISCOLORSPACE_MATRIX_BT2020_NCL', 'SDL_ISCOLORSPACE_LIMITED_RANGE',
@@ -165,13 +168,13 @@ FUNCTION_MACROS = {
     # SDL_surface.h
     'SDL_MUSTLOCK': ('', 'bool', 'const SDL_Surface *S', 'constexpr'),
     # SDL_video.h
-    'SDL_WINDOWPOS_UNDEFINED_DISPLAY': ('', 'auto', 'SDL_DisplayID X', 'constexpr'),
-    'SDL_WINDOWPOS_ISUNDEFINED': ('', 'bool', 'int X', 'constexpr'),
-    'SDL_WINDOWPOS_CENTERED_DISPLAY': ('', 'auto', 'SDL_DisplayID X', 'constexpr'),
-    'SDL_WINDOWPOS_ISCENTERED': ('', 'bool', 'int X', 'constexpr'),
+    'SDL_WINDOWPOS_UNDEFINED_DISPLAY': ('template <class T>', 'auto', 'T X', 'constexpr'),
+    'SDL_WINDOWPOS_ISUNDEFINED': ('template <class T>', 'auto', 'T X', 'constexpr'),
+    'SDL_WINDOWPOS_CENTERED_DISPLAY': ('template <class T>', 'auto', 'T X', 'constexpr'),
+    'SDL_WINDOWPOS_ISCENTERED': ('template <class T>', 'auto', 'T X', 'constexpr'),
     # SDL_keycode.h, SDL_mouse.h
-    'SDL_SCANCODE_TO_KEYCODE': ('', 'SDL_Keycode', 'SDL_Scancode X', 'constexpr'),
-    'SDL_BUTTON_MASK': ('', 'auto', 'int X', 'constexpr'),
+    'SDL_SCANCODE_TO_KEYCODE': ('template <class T>', 'auto', 'T X', 'constexpr'),
+    'SDL_BUTTON_MASK': ('template <class T>', 'auto', 'T X', 'constexpr'),
     # SDL_timer.h
     'SDL_SECONDS_TO_NS': ('template <class T>', 'auto', 'T S', 'constexpr'),
     'SDL_NS_TO_SECONDS': ('template <class T>', 'auto', 'T NS', 'constexpr'),
@@ -282,3 +285,12 @@ EXCLUDED_MACROS.update({n: "clang's static analyzer only: redirected to the C li
 def is_include_guard(macro) -> bool:
     import re
     return macro.params is None and macro.body == '' and bool(re.fullmatch(r'\w+_h_?', macro.name))
+
+# Mapped string constants whose usual use only a macro serves: printf
+# formats concatenated with literals ("%" SDL_PRIs64). The constants are in
+# the macros module; for concatenation include <mwrap/sdl3/macros.hpp>
+# (tools/run_conformance.py keeps them as macros for upstream's suites).
+PREPROCESSOR = {
+    'SDL_PRIs64', 'SDL_PRIu64', 'SDL_PRIx64', 'SDL_PRIX64', 'SDL_PRIs32', 'SDL_PRIu32', 'SDL_PRIx32', 'SDL_PRIX32',
+    'SDL_PRILL_PREFIX', 'SDL_PRILLd', 'SDL_PRILLu', 'SDL_PRILLx', 'SDL_PRILLX',
+}
