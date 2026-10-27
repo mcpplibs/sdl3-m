@@ -1,0 +1,3 @@
+[template]
+description  = "A sketch pad in a window, with SDL's app callbacks (SDL_MAIN_USE_CALLBACKS) and import mcpplibs.mwrap.sdl3: draw with the mouse, C clears, S saves sketch.bmp, Esc quits. Needs a desktop session"
+post_message = "Run `mcpp run` on a desktop: draw with the mouse, C clears, S saves sketch.bmp, Esc quits."

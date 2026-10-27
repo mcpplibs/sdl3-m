@@ -1,0 +1,4 @@
+[template]
+description  = "What SDL 3 sees on this machine, through import mcpplibs.mwrap.sdl3: version, CPU, drivers, displays, a GPU device, power and locales — no window, no desktop needed"
+default      = true
+post_message = "Run `mcpp run`; without a display it reports through SDL's offscreen video driver."
