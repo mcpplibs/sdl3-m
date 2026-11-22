@@ -29,7 +29,7 @@ automated test suite passes on every CI run, compiled against the module.
 ## Getting started
 
 ```sh
-mcpp new sdlinfo --template mcpplibs.mwrap.sdl3@3.4.18
+mcpp new sdlinfo --template mcpplibs.mwrap.sdl3@3.4.18.1
 cd sdlinfo
 mcpp run
 ```
@@ -39,11 +39,11 @@ version, CPU features, video, render, audio and GPU drivers, the displays, a
 GPU device and its shader formats. It needs no window or desktop; without a
 display it reports through SDL's offscreen driver. The `window` template is a
 sketch pad on SDL's app callbacks and needs a desktop:
-`mcpp new pad --template mcpplibs.mwrap.sdl3@3.4.18:window`.
+`mcpp new pad --template mcpplibs.mwrap.sdl3@3.4.18.1:window`.
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.sdl3" = "3.4.18"
+mcpplibs.mwrap.sdl3 = "3.4.18.1"
 ```
 
 ```cpp

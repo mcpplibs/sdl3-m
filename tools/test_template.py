@@ -54,7 +54,10 @@ def main():
         project = temporary / "quickstart"
         manifest = project / "mcpp.toml"
         text = manifest.read_text()
-        dependency = tomllib.loads(text)["dependencies"][identity]
+        # The key is unquoted, so TOML reads it as one table per segment.
+        dependency = tomllib.loads(text)["dependencies"]
+        for segment in identity.split("."):
+            dependency = dependency[segment]
         options = {"version": dependency} if isinstance(dependency, str) else dependency
         assert options["version"] == version, options
         replacement = '{ path = ' + json.dumps(package.as_posix())
@@ -62,9 +65,9 @@ def main():
             replacement += ', features = ' + json.dumps(options["features"])
         replacement += ' }'
         lines = text.splitlines()
-        matches = [i for i, line in enumerate(lines) if line.startswith(json.dumps(identity) + " =")]
-        assert len(matches) == 1, "Expected exactly one qualified dependency from self.name"
-        lines[matches[0]] = json.dumps(identity) + " = " + replacement
+        matches = [i for i, line in enumerate(lines) if line.startswith(identity + " =")]
+        assert len(matches) == 1, "Expected exactly one unquoted qualified dependency from self.name"
+        lines[matches[0]] = identity + " = " + replacement
         manifest.write_text("\n".join(lines) + "\n")
         if args.index:
             candidate_index = args.index.resolve()
