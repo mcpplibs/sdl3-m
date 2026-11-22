@@ -104,7 +104,7 @@ sources      = ["src/*.cppm", "src/suites/*.cpp", "src/sdltest/*.c"]
 include_dirs = ["src", "src/sdltest"]
 
 [dependencies]
-"mcpplibs.mwrap.sdl3" = {{ path = {root} }}
+mcpplibs.mwrap.sdl3 = {{ path = {root} }}
 '''
 
 
