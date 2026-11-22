@@ -2,7 +2,7 @@
 [package]
 namespace   = "mcpplibs.mwrap"
 name        = "sdl3"
-version     = "3.4.18"
+version     = "3.4.18.1"
 description = "SDL 3.4.18 C++ modules for mcpp (import mcpplibs.mwrap.sdl3;): the C API of SDL.h (with SDL_vulkan.h and SDL_main.h's functions) over compat.sdl3, its inline API adapted, its macros as constants and functions"
 license     = "Apache-2.0"
 authors     = ["mcpp-community"]

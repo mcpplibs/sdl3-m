@@ -27,7 +27,7 @@
 ## 快速开始
 
 ```sh
-mcpp new sdlinfo --template mcpplibs.mwrap.sdl3@3.4.18
+mcpp new sdlinfo --template mcpplibs.mwrap.sdl3@3.4.18.1
 cd sdlinfo
 mcpp run
 ```
@@ -35,11 +35,11 @@ mcpp run
 默认模板（`info`）打印 SDL 在这台机器上看到的一切：版本、CPU 特性、视频/渲染/
 音频/GPU 驱动、显示器、一个 GPU 设备及其着色器格式。它不需要窗口或桌面；没有显示器时
 通过 SDL 的 offscreen 驱动报告。`window` 模板是基于 SDL 应用回调的画板，需要桌面环境：
-`mcpp new pad --template mcpplibs.mwrap.sdl3@3.4.18:window`。
+`mcpp new pad --template mcpplibs.mwrap.sdl3@3.4.18.1:window`。
 
 ```toml
 [dependencies]
-"mcpplibs.mwrap.sdl3" = "3.4.18"
+mcpplibs.mwrap.sdl3 = "3.4.18.1"
 ```
 
 ```cpp
